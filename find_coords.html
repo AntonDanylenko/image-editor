@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<img hidden id="image" src="thanos_car_3.jpg" alt="Image">
+<canvas id="myCanvas" width="700" height="700"
+style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<br>
+
+<div>
+  <a id="line" onclick="addline()"><button class="button" style="width: 120px;">line</button></a>
+  <a id="curve" onclick="addcurve()"><button class="button" style="width: 120px;">curve</button></a>
+  <a id="done" onclick="done()"><button class="button" style="width: 120px;">done</button></a>
+</div>
+
+<p id="coords"></p>
+<p id="saved_coords"></p>
+
+<script>
+window.onload = function() {
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var img = document.getElementById("image");
+    ctx.drawImage(img, 0, 0);
+};
+var c = document.getElementById("myCanvas");
+var lastpoint = "";
+c.addEventListener('mousemove', function(e){
+  document.getElementById("coords").innerHTML = "x: " + Math.floor(e.offsetX/700.0*500) + ", y: " + Math.floor((700-e.offsetY)/700.0*500);
+})
+c.addEventListener('click', function(e){
+  document.getElementById("saved_coords").innerHTML = document.getElementById("saved_coords").innerHTML + Math.floor(e.offsetX/700.0*500) + " " + Math.floor((700-e.offsetY)/700.0*500) + " 0 ";
+  lastpoint = Math.floor(e.offsetX/700.0*500) + " " + Math.floor((700-e.offsetY)/700.0*500) + " ";
+})
+
+function addline() {
+  document.getElementById("saved_coords").innerHTML = document.getElementById("saved_coords").innerHTML + "<br>line<br>" + lastpoint + "0 ";
+}
+function addcurve() {
+  document.getElementById("saved_coords").innerHTML = document.getElementById("saved_coords").innerHTML + "<br>bezier<br>" + lastpoint;
+}
+function done() {
+  document.getElementById("saved_coords").innerHTML = document.getElementById("saved_coords").innerHTML + "<br>display<br>save<br>result.png";
+}
+
+document.onkeypress = function(e){
+  var key = e.which || e.keyCode;
+  if (key==115){
+    addline();
+  }
+  else if (key==100){
+    addcurve();
+  }
+}
+</script>
+
+</body>
+</html>
